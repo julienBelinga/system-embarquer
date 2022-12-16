@@ -1,7 +1,9 @@
 
-int level = 5;
+int level = 0;
 int modelArray[100];
 bool canTry = false;
+int playerArray[64];
+int playerTry = 0;
 
 void showGoodSeaquence()
 {
@@ -26,6 +28,16 @@ void newLevel()
   }
 
   showGoodSeaquence();
+
   level++;
   canTry = true;
+}
+
+void checkPlayerTry() {
+  canTry = false;
+  for(int i = 0; i < level; i++) {
+    if(playerArray[level] == modelArray[i]){
+      
+    }
+  }
 }

@@ -4,7 +4,6 @@
 #define Y_DIM 8 // number of rows of key
 #define X_DIM 8 // number of columns of keys
 
-
 void setup()
 {
   Serial.begin(9600);
