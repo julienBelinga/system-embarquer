@@ -15,5 +15,5 @@ Pull requests are welcome ;).
 
 ## License
 
-tyrano-folio.vercel.app
-julien-belinga.fr
+[Tyranosaurus's portfolio](tyrano-folio.vercel.app)
+[julienBelinga's portfolio](julien-belinga.fr)
