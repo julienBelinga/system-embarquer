@@ -13,7 +13,9 @@ download Adafruit NeoTrellis library
 
 Pull requests are welcome ;).
 
-## License
+## Contributor
 
 [Tyranosaurus's portfolio](tyrano-folio.vercel.app)
+
+
 [julienBelinga's portfolio](julien-belinga.fr)
