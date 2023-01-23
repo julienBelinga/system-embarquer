@@ -41,6 +41,65 @@ void JouerNote(unsigned int note, unsigned int nombreDeTemps) {
   tone(2, note, nombreDeTemps * DUREE_TEMPS);
 }
 
+void displaySmileyWin(){
+  trellis.setPixelColor(22, 0x454B1B);
+  trellis.setPixelColor(30, 0x454B1B);
+  trellis.setPixelColor(49, 0x454B1B);
+  trellis.setPixelColor(57, 0x454B1B);
+  trellis.setPixelColor(9, 0x454B1B);
+  trellis.setPixelColor(18, 0x454B1B);
+  trellis.setPixelColor(19, 0x454B1B);
+  trellis.setPixelColor(52, 0x454B1B);
+  trellis.setPixelColor(53, 0x454B1B);
+  trellis.setPixelColor(46, 0x454B1B);
+
+  trellis.show();
+
+  delay(1500);
+
+  trellis.setPixelColor(22, 0);
+  trellis.setPixelColor(30, 0);
+  trellis.setPixelColor(49, 0);
+  trellis.setPixelColor(57, 0);
+  trellis.setPixelColor(9, 0);
+  trellis.setPixelColor(18, 0);
+  trellis.setPixelColor(19, 0);
+  trellis.setPixelColor(52, 0);
+  trellis.setPixelColor(53, 0);
+  trellis.setPixelColor(46, 0);
+
+  trellis.show();
+}
+
+void displaySmileyLose(){
+  trellis.setPixelColor(22, 0xFF0000);
+  trellis.setPixelColor(30, 0xFF0000);
+  trellis.setPixelColor(49, 0xFF0000);
+  trellis.setPixelColor(57, 0xFF0000);
+  trellis.setPixelColor(17, 0xFF0000);
+  trellis.setPixelColor(10, 0xFF0000);
+  trellis.setPixelColor(11, 0xFF0000);
+  trellis.setPixelColor(44, 0xFF0000);
+  trellis.setPixelColor(45, 0xFF0000);
+  trellis.setPixelColor(54, 0xFF0000);
+
+  trellis.show();
+
+  delay(1500);
+
+  trellis.setPixelColor(22, 0);
+  trellis.setPixelColor(30, 0);
+  trellis.setPixelColor(49, 0);
+  trellis.setPixelColor(57, 0);
+  trellis.setPixelColor(17, 0);
+  trellis.setPixelColor(10, 0);
+  trellis.setPixelColor(11, 0);
+  trellis.setPixelColor(44, 0);
+  trellis.setPixelColor(45, 0);
+  trellis.setPixelColor(54, 0);
+
+  trellis.show();
+}
 
 //check if player sequence is right
 void checkPlayerTry() {
@@ -67,23 +126,13 @@ void checkPlayerTry() {
   }
   if (error) {
     level = 0;
-    for (int y = 0; y < Y_DIM; y++) {
-      for (int x = 0; x < X_DIM; x++) {
-        trellis.setPixelColor(x, y, 0xFF0000);
-      }
-    }
-    trellis.show();
-    delay(2000);
-    for (int y = 0; y < Y_DIM; y++) {
-      for (int x = 0; x < X_DIM; x++) {
-        trellis.setPixelColor(x, y, 0xFF0000);
-      }
-    }
-    trellis.show();
-    delay(1000);
+    
+    displaySmileyLose();
+    
     canTry = false;
     setup();
   } else{
+    displaySmileyWin();
   delay(1000);
   newLevel();
   }
@@ -186,6 +235,7 @@ TrellisCallback blink(keyEvent evt) {
   tab[61] = 25088;
   tab[62] = 28160;
   tab[63] = 31609;
+
   JouerNote(tab[evt.bit.NUM], 1);
   if (evt.bit.EDGE == SEESAW_KEYPAD_EDGE_RISING){
     trellis.setPixelColor(evt.bit.NUM, Wheel(map(evt.bit.NUM, 0, X_DIM * Y_DIM, 0, 255)));  // on rising
@@ -199,7 +249,6 @@ playerTry++;
     playerTry = 0;
     checkPlayerTry();
   }
-  //Serial.println(playerTry);
   }
   trellis.show();
  
