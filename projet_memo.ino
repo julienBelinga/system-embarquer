@@ -6,11 +6,11 @@
 #define SILENCE 70
 
 int tab[64];
-int level;
-int modelArray[64];
+int level = 0;
+int modelArray[100];
 bool canTry = false;
 int playerArray[64];
-int playerTry;
+int playerTry = 0;
 // create a matrix of trellis panels
 Adafruit_NeoTrellis t_array[Y_DIM / 4][X_DIM / 4] = {
 
@@ -41,23 +41,17 @@ void JouerNote(unsigned int note, unsigned int nombreDeTemps) {
   tone(2, note, nombreDeTemps * DUREE_TEMPS);
 }
 
-
-//check if player sequence is right
 void checkPlayerTry() {
   canTry = false;
   bool error = false;
-  for (int i = 0; i < level; i++) {
-    //Serial.print("player seq ");
-    //Serial.println(playerArray[i]);
-    //Serial.print("model seq ");
-    //Serial.println(modelArray[i]);
+  for (int i = 0; i <= level; i++) {
+    Serial.println(playerArray[i]);
+    Serial.println(modelArray[i]);
     if (playerArray[i] != modelArray[i]) {
-      //Serial.println("different");
       trellis.setPixelColor(playerArray[i], (int)0xFF0000);
       trellis.setPixelColor(modelArray[i], (int)0x00FF00);
       error = true;
     } else {
-      //Serial.println("good");
       trellis.setPixelColor(playerArray[i], (int)0x00FF00);
     }
     trellis.show();
@@ -72,17 +66,11 @@ void checkPlayerTry() {
         trellis.setPixelColor(x, y, 0xFF0000);
       }
     }
-    trellis.show();
-    delay(2000);
-    for (int y = 0; y < Y_DIM; y++) {
-      for (int x = 0; x < X_DIM; x++) {
-        trellis.setPixelColor(x, y, 0xFF0000);
-      }
-    }
-    trellis.show();
-    delay(1000);
     canTry = false;
-  } else
+    trellis.show();
+  } else {
+    level++;
+  }
   delay(1000);
   newLevel();
 }
@@ -100,15 +88,12 @@ void showGoodSeaquence() {
   trellis.show();
 }
 void newLevel() {
-  //Serial.print("level ");
-  //Serial.println(level);
   for (int i = 0; i <= level; i++) {
     modelArray[i] = random(0, 63);
   }
 
   showGoodSeaquence();
 
-playerTry = 0;
   level++;
   canTry = true;
 }
@@ -119,7 +104,14 @@ TrellisCallback blink(keyEvent evt) {
     return 0;
   }
 
-  
+  if (playerTry <= level) {
+    playerArray[playerTry] = evt.bit.NUM;
+    playerTry++;
+  }
+  if (playerTry > level) {
+    playerTry = 0;
+    checkPlayerTry();
+  }
   tab[0] = 62;
   tab[1] = 65;
   tab[2] = 73;
@@ -185,22 +177,12 @@ TrellisCallback blink(keyEvent evt) {
   tab[62] = 28160;
   tab[63] = 31609;
   JouerNote(tab[evt.bit.NUM], 1);
-  if (evt.bit.EDGE == SEESAW_KEYPAD_EDGE_RISING){
+  if (evt.bit.EDGE == SEESAW_KEYPAD_EDGE_RISING)
     trellis.setPixelColor(evt.bit.NUM, Wheel(map(evt.bit.NUM, 0, X_DIM * Y_DIM, 0, 255)));  // on rising
-}
-  else if (evt.bit.EDGE == SEESAW_KEYPAD_EDGE_FALLING){
+  else if (evt.bit.EDGE == SEESAW_KEYPAD_EDGE_FALLING)
     trellis.setPixelColor(evt.bit.NUM, 0);  // off falling
-    playerArray[playerTry] = evt.bit.NUM;
-playerTry++;
-  if (playerTry >= level) {
-    delay(1000);
-    playerTry = 0;
-    checkPlayerTry();
-  }
-  //Serial.println(playerTry);
-  }
+
   trellis.show();
- 
   return 0;
 }
 
@@ -217,7 +199,7 @@ void setup() {
   for (int i = 0; i < Y_DIM * X_DIM; i++) {
     trellis.setPixelColor(i, Wheel(map(i, 0, X_DIM * Y_DIM, 0, 255)));  // addressed with keynum
     trellis.show();
-    delay(10);
+    delay(50);
   }
 
   for (int y = 0; y < Y_DIM; y++) {
@@ -228,11 +210,10 @@ void setup() {
       trellis.registerCallback(x, y, blink);
       trellis.setPixelColor(x, y, 0x000000);  // addressed with x,y
       trellis.show();                         // show all LEDs
-      delay(10);
+      delay(50);
     }
   }
   randomSeed(analogRead(0));
-  level = 0;
   newLevel();
 }
 
