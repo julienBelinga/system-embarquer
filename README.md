@@ -15,7 +15,7 @@ Pull requests are welcome ;).
 
 ## Contributor
 
-[Tyranosaurus's portfolio](tyrano-folio.vercel.app)
+[Tyranosaurus's portfolio](https://tyrano-folio.vercel.app)
 
 
-[julienBelinga's portfolio](julien-belinga.fr)
+[julienBelinga's portfolio](https://julien-belinga.fr)
