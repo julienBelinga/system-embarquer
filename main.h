@@ -1,7 +1,7 @@
+#include "Adafruit_NeoTrellis.h"
+#define Y_DIM 8 // number of rows of key
+#define X_DIM 8 // number of columns of keys
 
-int level = 5;
-int modelArray[100];
-bool canTry = false;
 
 void showGoodSeaquence()
 {
@@ -15,8 +15,7 @@ void showGoodSeaquence()
   for (int i = 0; i < level; i++)
   {
     trellis.setPixelColor(modelArray[i], 0);
-  }
-  trellis.show();
+  }  trellis.show();
 }
 void newLevel()
 {
@@ -26,6 +25,16 @@ void newLevel()
   }
 
   showGoodSeaquence();
+
   level++;
   canTry = true;
+}
+
+void checkPlayerTry() {
+  canTry = false;
+  for(int i = 0; i < level; i++) {
+    if(playerArray[level] == modelArray[i]){
+      
+    }
+  }
 }
